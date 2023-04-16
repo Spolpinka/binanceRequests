@@ -22,9 +22,28 @@ public class RequestController {
     }
 
     @GetMapping("/RubUSDT")
-    public String getRubUSDT() {
+    public ResponseEntity<String> getRubUSDT() {
         try {
-            return requestService.getRubUsdt();
+            return ResponseEntity.ok(requestService.getRubUsdt("USDTRUB"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("BTCUSDT")
+    public String getBTCUSDT() {
+        try {
+            return requestService.getRubUsdt("BTCUSDT");
+        } catch (IOException e) {
+            return e.toString();
+        }
+    }
+
+    @GetMapping("PHPUSDT")
+    public String getPHPUSDT() {
+        try {
+            return requestService.getRubUsdt("PHPUSDT");
         } catch (IOException e) {
             return e.toString();
         }

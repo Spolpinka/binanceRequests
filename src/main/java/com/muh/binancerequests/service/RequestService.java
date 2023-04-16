@@ -11,10 +11,9 @@ import java.io.IOException;
 public class RequestService {
     private static final String BASE_URL = "https://api.binance.com";
 
-    public String getRubUsdt() throws IOException {
+    public String getRubUsdt(String symbol) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
-        String symbol = "RUBUSDT";
         String endpoint = "/api/v3/ticker/24hr";
         String url = BASE_URL + endpoint + "?symbol=" + symbol;
 
@@ -24,6 +23,11 @@ public class RequestService {
 
         Response response = client.newCall(request).execute();
 
-        return response.body().string();
+        String result = response.body().string();
+        int firstPosition = result.indexOf("symbol");
+        result = result.substring(firstPosition + "symbol".length());
+
+
+        return result;
     }
 }
