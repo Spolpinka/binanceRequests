@@ -48,4 +48,14 @@ public class RequestController {
             return e.toString();
         }
     }
+
+    @GetMapping("/avgUSDTRUB")
+    public ResponseEntity<String> avgUSDTRUB() {
+        try{
+            return ResponseEntity.ok(requestService.getAvrCourse("USDTRUB"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
