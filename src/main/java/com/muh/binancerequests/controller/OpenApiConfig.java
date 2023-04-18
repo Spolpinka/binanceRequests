@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.info.Info;
                 contact = @Contact(
                         name = "Сироткина Яна Евгеньевна",
                         email = "a421243266@gmail.com",
-                        url = "https://github.com/Spolpinka/RecipesSite"
+                        url = "https://github.com/Spolpinka/binanceRequests"
                 )
         )
 )
