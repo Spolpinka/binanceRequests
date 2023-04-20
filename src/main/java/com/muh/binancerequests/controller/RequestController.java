@@ -1,6 +1,7 @@
 package com.muh.binancerequests.controller;
 
 import com.muh.binancerequests.service.RequestService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,12 +11,13 @@ import java.io.IOException;
 @RestController
 public class RequestController {
 
-    private RequestService requestService;
+    private final RequestService requestService;
 
     public RequestController(RequestService requestService) {
         this.requestService = requestService;
     }
 
+    @Operation(summary = "Hello", description = "проверка запуска программы")
     @GetMapping("/")
     public ResponseEntity<String> hello() {
         return ResponseEntity.ok("The program is working");
