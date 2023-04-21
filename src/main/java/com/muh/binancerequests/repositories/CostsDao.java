@@ -35,6 +35,8 @@ public class CostsDao {
 
     public void add(Double cost) {
         timeCosts.add(new TimeCost(cost));
+        lastId++;
+        saveToFile();
     }
 
     @PostConstruct

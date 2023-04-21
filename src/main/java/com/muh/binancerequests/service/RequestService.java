@@ -1,5 +1,6 @@
 package com.muh.binancerequests.service;
 
+import com.muh.binancerequests.repositories.CostsDao;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -10,7 +11,12 @@ import java.io.IOException;
 @Service
 public class RequestService {
     private static final String BASE_URL = "https://api.binance.com";
+    private final CostsDao costsDao;
     OkHttpClient client = new OkHttpClient();
+
+    public RequestService(CostsDao costsDao) {
+        this.costsDao = costsDao;
+    }
 
     public String getRubUsdt(String symbol) throws IOException {
 
@@ -26,7 +32,7 @@ public class RequestService {
         String result = response.body().string();
         int firstPosition = result.indexOf("symbol");
         result = result.substring(firstPosition + "symbol".length());
-
+//здесь надо вывести сумму и сохранить ее в базу
 
         return result;
     }
@@ -42,6 +48,12 @@ public class RequestService {
         Response response = client.newCall(request).execute();
 
         String result = response.body().string();
+
+        //просто сохранить как объект в базу
+        String start = "price\":\"";
+        Double price = Double.parseDouble(result.substring(result.indexOf(start) + start.length(), result.indexOf("\"}")));
+        System.out.println(price);
+        costsDao.add(price);
 
         return result;
     }
