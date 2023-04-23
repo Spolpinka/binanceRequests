@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class CostsDao {
@@ -23,18 +20,18 @@ public class CostsDao {
     private static int lastId = 0;
     private final FileService fileService;
 
-    private List<TimeCost> timeCosts = new ArrayList<>();
+    private Map<Integer, TimeCost> timeCosts = new HashMap<>();
 
     public CostsDao(FileService fileService) {
         this.fileService = fileService;
     }
 
-    public List<TimeCost> getAllList() {
+    public Map<Integer, TimeCost> getTimeCosts() {
         return timeCosts;
     }
 
     public void add(Double cost) {
-        timeCosts.add(new TimeCost(cost));
+        timeCosts.put(lastId, new TimeCost(cost));
         lastId++;
         saveToFile();
     }
@@ -78,6 +75,6 @@ public class CostsDao {
     @AllArgsConstructor
     private static class DataFile {
         private int lastId;
-        private List<TimeCost> timeCosts;
+        private Map<Integer, TimeCost> timeCosts;
     }
 }
