@@ -45,7 +45,7 @@ public class RequestController {
     @GetMapping("PHPUSDT")
     public String getPHPUSDT() {
         try {
-            return requestService.getRubUsdt("PHPUSDT");
+            return requestService.getRubUsdt("USDT/PHP");
         } catch (IOException e) {
             return e.toString();
         }
@@ -70,6 +70,26 @@ public class RequestController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/ratioRUBPHP")
+    public ResponseEntity<String> ratioUSDTRUB() {
+        try{
+            return ResponseEntity.ok(requestService.getRatio("USDTRUB", "PHPUSDT"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/exchangeInfo")
+    public ResponseEntity<String> exchangeInfo() {
+        try {
+            return ResponseEntity.ok(requestService.exchangeInfo());
+        } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
