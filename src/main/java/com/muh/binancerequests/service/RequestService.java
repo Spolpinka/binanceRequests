@@ -53,8 +53,18 @@ public class RequestService {
         String start = "price\":\"";
         Double price = Double.parseDouble(result.substring(result.indexOf(start) + start.length(), result.indexOf("\"}")));
         System.out.println(price);
-        costsDao.add(price);
+        costsDao.add(price, symbol);
 
         return result;
+    }
+
+    //делаем длящийся запрос
+    public void getTimeLapsRequests(String symbol) throws IOException, InterruptedException {
+        String result = "";
+        while (true) {
+            result = getAvrCourse(symbol);
+            System.out.println(result);
+            Thread.sleep(1800000);
+        }
     }
 }

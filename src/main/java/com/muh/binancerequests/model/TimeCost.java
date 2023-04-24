@@ -11,10 +11,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TimeCost {
     private double cost;
-    private LocalDateTime time;
 
-    public TimeCost(double cost) {
+    private String symbol;
+    private String time;
+
+    public TimeCost(double cost, String symbol) {
         this.cost = cost;
-        time = LocalDateTime.now();
+        this.symbol = symbol;
+        LocalDateTime ldt = LocalDateTime.now();
+        time = "" + ldt.getHour() + ":" +
+        ldt.getMinute() + " " +
+        ldt.getDayOfMonth() + "-" +
+        ldt.getMonth() + "-" +
+        ldt.getYear();
     }
 }

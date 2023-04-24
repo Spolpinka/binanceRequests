@@ -60,4 +60,18 @@ public class RequestController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/timeLapUSDTRUB")
+    public ResponseEntity<Void> timeLapsUSDTRUB() {
+        try{
+            requestService.getTimeLapsRequests("USDTRUB");
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

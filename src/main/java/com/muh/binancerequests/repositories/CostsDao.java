@@ -11,7 +11,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.Month;
 import java.util.*;
 
 @Repository
@@ -30,8 +29,8 @@ public class CostsDao {
         return timeCosts;
     }
 
-    public void add(Double cost) {
-        timeCosts.put(lastId, new TimeCost(cost));
+    public void add(Double cost, String symbol) {
+        timeCosts.put(lastId, new TimeCost(cost, symbol));
         lastId++;
         saveToFile();
     }
