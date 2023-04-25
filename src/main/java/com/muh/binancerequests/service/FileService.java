@@ -16,7 +16,6 @@ public class FileService {
     private String dataFileName;
 
 
-
     public String readFromFile() {
         try {
             return Files.readString(Path.of(dataFilePath, dataFileName));
@@ -29,11 +28,11 @@ public class FileService {
     public boolean saveToFile(String json) {
         try {
             if (cleanDataFile()) {
-                System.out.println("норм файл очистился");
+                Files.writeString(Path.of(dataFilePath, dataFileName), json);
             } else {
                 System.out.println("Проблема с очищением файла записи");
             }
-            Files.writeString(Path.of(dataFilePath, dataFileName), json);
+
             return true;
         } catch (IOException e) {
             e.printStackTrace();
