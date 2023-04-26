@@ -1,5 +1,6 @@
 package com.muh.binancerequests.controller;
 
+import com.muh.binancerequests.service.GraphDrawerService;
 import com.muh.binancerequests.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,11 @@ import java.io.IOException;
 public class RequestController {
 
     private final RequestService requestService;
+    //private final GraphDrawerService graphDrawerService;
 
     public RequestController(RequestService requestService) {
         this.requestService = requestService;
+        //this.graphDrawerService = graphDrawerService;
     }
 
     @Operation(summary = "Hello", description = "проверка запуска программы")
@@ -94,4 +97,10 @@ public class RequestController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    /*@GetMapping("/graph")
+    public ResponseEntity<Void> graph() {
+        graphDrawerService.ChartAppSwing();
+        return ResponseEntity.ok().build();
+    }*/
 }
