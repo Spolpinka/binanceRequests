@@ -19,7 +19,7 @@ public class CostsDao {
     private static int lastId = 0;
     private final FileService fileService;
 
-    private Map<Integer, TimeCost> timeCosts = new HashMap<>();
+    private Map<Integer, TimeCost> timeCosts = new TreeMap<>();
 
     public CostsDao(FileService fileService) {
         this.fileService = fileService;
@@ -67,6 +67,18 @@ public class CostsDao {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    public TreeMap<String, Double> getMapForChart() {
+        Collection <TimeCost> list = timeCosts.values();
+        TreeMap<String, Double> result = new TreeMap<>();
+
+        for (TimeCost bean :
+                list) {
+            result.put(bean.getTime(), bean.getCost());
+        }
+
+        return result;
     }
 
     @Data

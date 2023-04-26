@@ -1,6 +1,6 @@
 package com.muh.binancerequests.controller;
 
-import com.muh.binancerequests.service.GraphDrawerService;
+import com.muh.binancerequests.service.ChartApplication;
 import com.muh.binancerequests.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +13,11 @@ import java.io.IOException;
 public class RequestController {
 
     private final RequestService requestService;
-    //private final GraphDrawerService graphDrawerService;
+    private final ChartApplication chartApplication;
 
-    public RequestController(RequestService requestService) {
+    public RequestController(RequestService requestService, ChartApplication chartApplication) {
         this.requestService = requestService;
-        //this.graphDrawerService = graphDrawerService;
+        this.chartApplication = chartApplication;
     }
 
     @Operation(summary = "Hello", description = "проверка запуска программы")
@@ -98,9 +98,8 @@ public class RequestController {
         }
     }
 
-    /*@GetMapping("/graph")
-    public ResponseEntity<Void> graph() {
-        graphDrawerService.ChartAppSwing();
-        return ResponseEntity.ok().build();
-    }*/
+    @GetMapping("/graph")
+    public void graph() {
+        chartApplication.showChart(requestService.getMapForChart());
+    }
 }

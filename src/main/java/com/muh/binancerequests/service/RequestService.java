@@ -7,6 +7,7 @@ import okhttp3.Response;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.TreeMap;
 
 @Service
 public class RequestService {
@@ -94,5 +95,9 @@ public class RequestService {
         Response response = client.newCall(request).execute();
 
         return response.body().string();
+    }
+
+    public TreeMap<String, Double> getMapForChart() {
+        return costsDao.getMapForChart();
     }
 }
