@@ -31,7 +31,6 @@ public class CostsDao {
 
     public void add(Double cost, String symbol) {
         timeCosts.put(lastId, new TimeCost(cost, symbol));
-        lastId++;
         saveToFile();
     }
 

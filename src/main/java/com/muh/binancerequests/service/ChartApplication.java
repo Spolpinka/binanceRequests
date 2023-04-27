@@ -31,10 +31,7 @@ public class ChartApplication {
             Double cost = entry.getValue();
             ChartData chartData = new ChartData();
             chartData.setCost(cost);
-            DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                    .appendPattern("H:mm d-MMMM-yyyy")
-                    .parseCaseInsensitive()
-                    .toFormatter(Locale.ENGLISH);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MMM-yyyy");
             try {
                 System.out.println(timestamp);
 
