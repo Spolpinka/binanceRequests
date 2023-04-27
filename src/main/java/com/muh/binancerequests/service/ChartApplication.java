@@ -14,6 +14,7 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -39,8 +40,9 @@ public class ChartApplication {
             Double cost = entry.getValue();
             ChartData chartData = new ChartData();
             chartData.setCost(cost);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MMM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MMMM-yyyy").localizedBy(Locale.ENGLISH);
             try {
+                timestamp = timestamp.replaceAll("APRIL", "April");
                 System.out.println(timestamp);
 
                 chartData.setTimestamp(LocalDateTime.parse(timestamp, formatter));
@@ -49,7 +51,7 @@ public class ChartApplication {
                 e.printStackTrace();
             }
 
-            dataset.addValue(chartData.getCost(), "Cost", new SimpleDateFormat("HH:mm dd-MMM-yyyy").format(chartData.getTimestamp()));
+            dataset.addValue(chartData.getCost(), "Cost", timestamp);
         }
 
         // Создание графика
