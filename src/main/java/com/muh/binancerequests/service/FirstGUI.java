@@ -7,27 +7,79 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
 
-@Service
-public class ChartApplication {
+public class FirstGUI extends JDialog {
+    private JPanel contentPane;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JPanel panel1;
 
+//пытаемся реализовать график
     private final ChartData chartData;
     private final CostsDao costsDao;
 
-    public ChartApplication(ChartData chartData, CostsDao costsDao) {
+    private static TreeMap<LocalDateTime, Double> dataTreeMap;
+
+    public FirstGUI(ChartData chartData, CostsDao costsDao) {
         this.chartData = chartData;
         this.costsDao = costsDao;
+
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public void showChart() {
-        TreeMap<LocalDateTime, Double> dataTreeMap = costsDao.getMapForChart();
+    private void onOK() {
+        // add your code here
+        dispose();
+    }
+
+    private void onCancel() {
+        // add your code here if necessary
+        dispose();
+    }
+
+    private static void init() {
+        CostsDao costsDao1 = new CostsDao(new FileService());
+        System.out.println("1");
+        TreeMap<LocalDateTime, Double> dataTreeMap = costsDao1.getMapForChart();
+        for (Map.Entry<LocalDateTime, Double> entry : dataTreeMap.entrySet()) {
+            System.out.println(entry.getKey().toString() + "-" + entry.getValue());
+        }
         // Создание датасета для графика
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -70,5 +122,12 @@ public class ChartApplication {
         // Отображение окна
         frame.setVisible(true);
     }
-}
 
+    public static void main(String[] args) {
+        FirstGUI dialog = new FirstGUI(new ChartData(), new CostsDao(new FileService()));
+        dialog.pack();
+        dialog.setVisible(true);
+        init();
+        System.exit(0);
+    }
+}

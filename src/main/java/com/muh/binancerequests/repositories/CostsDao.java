@@ -3,6 +3,7 @@ package com.muh.binancerequests.repositories;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.muh.binancerequests.model.TimeCost;
 import com.muh.binancerequests.service.FileService;
 import jakarta.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -29,8 +31,10 @@ public class CostsDao {
         return timeCosts;
     }
 
+
     public void add(Double cost, String symbol) {
         timeCosts.put(lastId, new TimeCost(cost, symbol));
+        lastId++;
         saveToFile();
     }
 
@@ -45,8 +49,10 @@ public class CostsDao {
 
     private void saveToFile() {
         try {
-            DataFile dataFile = new DataFile(lastId+1, timeCosts);
-            String s = new ObjectMapper().writeValueAsString(dataFile);
+            DataFile dataFile = new DataFile(lastId, timeCosts);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String s = objectMapper.writeValueAsString(dataFile);
             fileService.saveToFile(s);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -56,7 +62,10 @@ public class CostsDao {
     private void readFromFile() {
         try {
             String json = fileService.readFromFile();
-            DataFile dataFile = new ObjectMapper().readValue(fileService.readFromFile(),
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+
+            DataFile dataFile = objectMapper.readValue(fileService.readFromFile(),
                     new TypeReference<>() {
                     });
             lastId = dataFile.lastId;
@@ -68,9 +77,9 @@ public class CostsDao {
         }
     }
 
-    public TreeMap<String, Double> getMapForChart() {
+    public TreeMap<LocalDateTime, Double> getMapForChart() {
         Collection <TimeCost> list = timeCosts.values();
-        TreeMap<String, Double> result = new TreeMap<>();
+        TreeMap<LocalDateTime, Double> result = new TreeMap<>();
 
         for (TimeCost bean :
                 list) {

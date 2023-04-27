@@ -7,6 +7,7 @@ import okhttp3.Response;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.TreeMap;
 
 @Service
@@ -100,7 +101,7 @@ public class RequestService {
         return response.body().string();
     }
 
-    public TreeMap<String, Double> getMapForChart() {
+    public TreeMap<LocalDateTime, Double> getMapForChart() {
         return costsDao.getMapForChart();
     }
 }
