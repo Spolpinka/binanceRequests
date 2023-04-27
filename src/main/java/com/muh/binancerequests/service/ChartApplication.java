@@ -1,6 +1,7 @@
 package com.muh.binancerequests.service;
 
 import com.muh.binancerequests.repositories.ChartData;
+import com.muh.binancerequests.repositories.CostsDao;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -13,15 +14,22 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
 @Service
 public class ChartApplication {
 
-    public void showChart(TreeMap<String, Double> dataTreeMap) {
+    private final ChartData chartData;
+    private final CostsDao costsDao;
+
+    public ChartApplication(ChartData chartData, CostsDao costsDao) {
+        this.chartData = chartData;
+        this.costsDao = costsDao;
+    }
+
+    public void showChart() {
+        TreeMap<String, Double> dataTreeMap = costsDao.getMapForChart();
         // Создание датасета для графика
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 

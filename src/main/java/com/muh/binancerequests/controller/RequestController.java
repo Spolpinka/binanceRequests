@@ -97,9 +97,4 @@ public class RequestController {
             return ResponseEntity.internalServerError().build();
         }
     }
-
-    @GetMapping("/graph")
-    public void graph() {
-        chartApplication.showChart(requestService.getMapForChart());
-    }
 }

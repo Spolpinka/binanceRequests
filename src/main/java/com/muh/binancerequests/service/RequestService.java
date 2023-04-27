@@ -13,10 +13,13 @@ import java.util.TreeMap;
 public class RequestService {
     private static final String BASE_URL = "https://api.binance.com";
     private final CostsDao costsDao;
+
+    private final GraphCreator graphCreator;
     OkHttpClient client = new OkHttpClient();
 
-    public RequestService(CostsDao costsDao) {
+    public RequestService(CostsDao costsDao, GraphCreator graphCreator) {
         this.costsDao = costsDao;
+        this.graphCreator = graphCreator;
     }
 
     public String getRubUsdt(String symbol) throws IOException {
