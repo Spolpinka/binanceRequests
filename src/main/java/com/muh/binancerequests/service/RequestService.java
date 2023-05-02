@@ -58,7 +58,6 @@ public class RequestService {
         //просто сохранить как объект в базу
         String start = "price\":\"";
         Double price = Double.parseDouble(result.substring(result.indexOf(start) + start.length(), result.indexOf("\"}")));
-        System.out.println(price);
         costsDao.add(price, symbol);
 
         return result;
