@@ -64,6 +64,16 @@ public class RequestController {
         }
     }
 
+    @GetMapping("/avgBTCUSDT")
+    public ResponseEntity<String> avgBTCUSDT(){
+        try{
+            return ResponseEntity.ok(requestService.getAvrCourse("BTCUSDT"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/timeLapUSDTRUB")
     public ResponseEntity<Void> timeLapsUSDTRUB() {
         try{
