@@ -1,23 +1,24 @@
 package com.muh.binancerequests.controller;
 
-import com.muh.binancerequests.service.ChartApplication;
 import com.muh.binancerequests.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class RequestController {
 
     private final RequestService requestService;
-    private final ChartApplication chartApplication;
 
-    public RequestController(RequestService requestService, ChartApplication chartApplication) {
+
+    public RequestController(RequestService requestService) {
         this.requestService = requestService;
-        this.chartApplication = chartApplication;
     }
 
     @Operation(summary = "Hello", description = "проверка запуска программы")
@@ -56,7 +57,7 @@ public class RequestController {
 
     @GetMapping("/avgUSDTRUB")
     public ResponseEntity<String> avgUSDTRUB() {
-        try{
+        try {
             return ResponseEntity.ok(requestService.getAvrCourse("USDTRUB"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -65,8 +66,8 @@ public class RequestController {
     }
 
     @GetMapping("/avgBTCUSDT")
-    public ResponseEntity<String> avgBTCUSDT(){
-        try{
+    public ResponseEntity<String> avgBTCUSDT() {
+        try {
             return ResponseEntity.ok(requestService.getAvrCourse("BTCUSDT"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,7 +77,7 @@ public class RequestController {
 
     @GetMapping("/timeLapUSDTRUB")
     public ResponseEntity<Void> timeLapsUSDTRUB() {
-        try{
+        try {
             requestService.getTimeLapsRequests("USDTRUB");
             return ResponseEntity.ok().build();
         } catch (IOException e) {
@@ -90,7 +91,7 @@ public class RequestController {
 
     @GetMapping("/ratioRUBPHP")
     public ResponseEntity<String> ratioUSDTRUB() {
-        try{
+        try {
             return ResponseEntity.ok(requestService.getRatio("USDTRUB", "PHPUSDT"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,4 +108,19 @@ public class RequestController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/getMonthCourses")
+    public ResponseEntity<List<Double>> getMonthCourses(@RequestParam int month) {
+        System.out.println(month);
+        if (requestService.getMonthCourses(month).isEmpty()) {
+            System.out.println("пустой лист");
+            return ResponseEntity.badRequest().build();
+        } else {
+            //return ResponseEntity.ok(requestService.getMonthCourses(month));
+            System.out.println("что то возвращает");
+            return ResponseEntity.ok(requestService.getMonthCourses(4));
+        }
+    }
+
+
 }

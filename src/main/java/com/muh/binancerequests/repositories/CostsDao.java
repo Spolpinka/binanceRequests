@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.ArrayList;
 
 @Repository
 public class CostsDao {
@@ -84,6 +85,20 @@ public class CostsDao {
         for (TimeCost bean :
                 list) {
             result.put(bean.getTime(), bean.getCost());
+        }
+
+        return result;
+    }
+
+    public List<Double> getMonthCourses(int month) {
+        Collection <TimeCost> list = timeCosts.values();
+        List<Double> result = new ArrayList<>();
+
+        for (TimeCost bean :
+                list) {
+            if (bean.getTime().getMonthValue() == month) {
+                result.add(bean.getCost());
+            }
         }
 
         return result;

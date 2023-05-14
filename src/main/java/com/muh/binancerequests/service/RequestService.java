@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.TreeMap;
 
 @Service
@@ -102,5 +103,10 @@ public class RequestService {
 
     public TreeMap<LocalDateTime, Double> getMapForChart() {
         return costsDao.getMapForChart();
+    }
+
+    public List<Double> getMonthCourses(int month){
+
+        return costsDao.getMonthCourses(month);
     }
 }
