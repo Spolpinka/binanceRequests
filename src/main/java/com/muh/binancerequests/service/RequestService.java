@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.TreeMap;
 
 @Service
@@ -16,12 +15,10 @@ public class RequestService {
     private static final String BASE_URL = "https://api.binance.com";
     private final CostsDao costsDao;
 
-    private final GraphCreator graphCreator;
     OkHttpClient client = new OkHttpClient();
 
     public RequestService(CostsDao costsDao, GraphCreator graphCreator) {
         this.costsDao = costsDao;
-        this.graphCreator = graphCreator;
     }
 
     public String getRubUsdt(String symbol) throws IOException {
@@ -35,18 +32,18 @@ public class RequestService {
 
         Response response = client.newCall(request).execute();
 
-        String result = response.body().string();
-        /*int firstPosition = result.indexOf("symbol");
-        result = result.substring(firstPosition + "symbol".length());*/
-//здесь надо вывести сумму и сохранить ее в базу
-
-        return result;
+        return response.body().string();
     }
 
     public String getAvrCourse(String symbol) throws IOException {
         String endpoint = "/api/v3/avgPrice";
-
-        String url = BASE_URL + endpoint + "?symbol=" + symbol;
+        String url = BASE_URL + endpoint + "?symbol=";
+        if (symbol != null){
+            url += symbol;
+        }
+        else {
+            url += "USDTRUB";
+        }
 
         Request request = new Request.Builder()
                 .url(url)
@@ -66,7 +63,7 @@ public class RequestService {
 
     //делаем длящийся запрос
     public void getTimeLapsRequests(String symbol) throws IOException, InterruptedException {
-        String result = "";
+        String result;
         while (true) {
             result = getAvrCourse(symbol);
             System.out.println(result);
@@ -105,7 +102,7 @@ public class RequestService {
         return costsDao.getMapForChart();
     }
 
-    public List<Double> getMonthCourses(int month){
+    public String getMonthCourses(int month){
 
         return costsDao.getMonthCourses(month);
     }

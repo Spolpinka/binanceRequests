@@ -21,4 +21,13 @@ public class TimeCost {
         time = LocalDateTime.now();
 
     }
+
+    @Override
+    public String toString() {
+        return "Время : " + time.getDayOfMonth() + "." + time.getMonth() + "." + time.getYear() +
+                " " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond() + "\n"+
+                "стоимость = " + cost + "\n" +
+                "символ = " + symbol + "\n"
+                ;
+    }
 }

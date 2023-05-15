@@ -90,18 +90,18 @@ public class CostsDao {
         return result;
     }
 
-    public List<Double> getMonthCourses(int month) {
+    public String getMonthCourses(int month) {
         Collection <TimeCost> list = timeCosts.values();
-        List<Double> result = new ArrayList<>();
+        StringBuilder result = new StringBuilder();
 
         for (TimeCost bean :
                 list) {
             if (bean.getTime().getMonthValue() == month) {
-                result.add(bean.getCost());
+                result.append("-> " + bean);
             }
         }
 
-        return result;
+        return result.toString();
     }
 
     @Data

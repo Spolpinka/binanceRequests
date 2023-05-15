@@ -4,12 +4,10 @@ import com.muh.binancerequests.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 public class RequestController {
@@ -80,10 +78,7 @@ public class RequestController {
         try {
             requestService.getTimeLapsRequests("USDTRUB");
             return ResponseEntity.ok().build();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
@@ -110,15 +105,11 @@ public class RequestController {
     }
 
     @GetMapping("/getMonthCourses")
-    public ResponseEntity<List<Double>> getMonthCourses(@RequestParam int month) {
-        System.out.println(month);
+    public ResponseEntity<String> getMonthCourses(@RequestParam int month) {
         if (requestService.getMonthCourses(month).isEmpty()) {
-            System.out.println("пустой лист");
             return ResponseEntity.badRequest().build();
         } else {
-            //return ResponseEntity.ok(requestService.getMonthCourses(month));
-            System.out.println("что то возвращает");
-            return ResponseEntity.ok(requestService.getMonthCourses(4));
+            return ResponseEntity.ok(requestService.getMonthCourses(month));
         }
     }
 
