@@ -98,6 +98,7 @@ public class RequestService {
         return response.body().string();
     }
 
+    //получаем Мапу для графика
     public TreeMap<LocalDateTime, Double> getMapForChart() {
         return costsDao.getMapForChart();
     }
