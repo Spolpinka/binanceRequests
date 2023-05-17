@@ -67,7 +67,7 @@ public class RequestService {
         while (true) {
             result = getAvrCourse(symbol);
             System.out.println(result);
-            Thread.sleep(1800000);
+            Thread.sleep(1_800_000);
         }
     }
 
