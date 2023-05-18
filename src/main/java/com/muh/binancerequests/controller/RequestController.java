@@ -113,5 +113,10 @@ public class RequestController {
         }
     }
 
+    @GetMapping("/transferToSql")
+    public ResponseEntity<Boolean> transferToSql(){
+        return ResponseEntity.ok(requestService.transferToSql());
+    }
+
 
 }

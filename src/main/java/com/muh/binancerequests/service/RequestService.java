@@ -107,4 +107,8 @@ public class RequestService {
 
         return costsDao.getMonthCourses(month);
     }
+
+    public boolean transferToSql(){
+        return costsDao.transferToSql();
+    }
 }

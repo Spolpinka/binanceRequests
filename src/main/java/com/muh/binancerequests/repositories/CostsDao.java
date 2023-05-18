@@ -10,14 +10,24 @@ import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.ArrayList;
 
 @Repository
 public class CostsDao {
+
+    @Value("${user}")
+    private String user;
+    @Value("${password}")
+    private String password;
+
+    @Value("${url}")
+    private String url;
 
     private static int lastId = 0;
     private final FileService fileService;
@@ -34,12 +44,28 @@ public class CostsDao {
 
 
     public void add(Double cost, String symbol) {
-        timeCosts.put(lastId, new TimeCost(cost, symbol));
-        lastId++;
-        saveToFile();
+        //тут просто добавляем в мапу
+        //timeCosts.put(lastId, new TimeCost(cost, symbol));
+
+        //здесь кидаем в базу SQL
+        try (final Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO binance_courses (datetime, symbol, cost) " +
+                             "VALUES (?, ?, ?)")) {
+            statement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setString(2, symbol);
+            statement.setDouble(3, cost);
+
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //lastId++;
+        //saveToFile();
     }
 
-    @PostConstruct
+    //для автоматической загрузки из файла
+    //@PostConstruct
     void init() {
         try {
             readFromFile();
@@ -91,17 +117,66 @@ public class CostsDao {
     }
 
     public String getMonthCourses(int month) {
-        Collection <TimeCost> list = timeCosts.values();
+        //Collection <TimeCost> list = timeCosts.values();
         StringBuilder result = new StringBuilder();
 
-        for (TimeCost bean :
-                list) {
-            if (bean.getTime().getMonthValue() == month) {
-                result.append("-> " + bean);
+        List<TimeCost> list = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+        PreparedStatement statement = connection.prepareStatement("" +
+                "SELECT * FROM binance_courses " +
+                "WHERE EXTRACT (MONTH FROM datetime) = (?) " +
+                "ORDER BY datetime")
+        ){
+            statement.setInt(1, month);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                result.append(resultSet.getString(1))
+                        .append(" | ")
+                        .append(resultSet.getString(2))
+                        .append(" | ")
+                        .append(resultSet.getString(3))
+                        .append(" | ")
+                        .append(resultSet.getString(4))
+                        .append("\n");
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
+
+
+//        for (TimeCost bean :
+//                list) {
+//            if (bean.getTime().getMonthValue() == month) {
+//                result.append("-> " + bean);
+//            }
+//        }
+
         return result.toString();
+    }
+
+    //переводи всю базу в SQL
+    public boolean transferToSql(){
+        try (final Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO binance_courses (datetime, symbol, cost) " +
+                             "VALUES (?, ?, ?)")) {
+            for (Map.Entry<Integer, TimeCost> entry : timeCosts.entrySet()) {
+
+            statement.setTimestamp(1, Timestamp.valueOf(entry.getValue().getTime()));
+            statement.setString(2, entry.getValue().getSymbol());
+            statement.setDouble(3, entry.getValue().getCost());
+
+            statement.execute();
+            }
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Data
