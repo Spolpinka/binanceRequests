@@ -24,7 +24,7 @@ public class TimeCost {
 
     @Override
     public String toString() {
-        return "Время : " + time.getDayOfMonth() + "." + time.getMonth() + "." + time.getYear() +
+        return "Время : " + time.getDayOfMonth() + "." + time.getMonth() + "." + time.getYear() + //в принципе можно использовать Long
                 " " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond() + "\n"+
                 "стоимость = " + cost + "\n" +
                 "символ = " + symbol + "\n"
