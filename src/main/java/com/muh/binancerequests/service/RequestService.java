@@ -22,7 +22,7 @@ public class RequestService {
 
     OkHttpClient client = new OkHttpClient();
 
-    public RequestService(CostsDao costsDao, GraphCreator graphCreator) {
+    public RequestService(CostsDao costsDao) {
         this.costsDao = costsDao;
     }
 
