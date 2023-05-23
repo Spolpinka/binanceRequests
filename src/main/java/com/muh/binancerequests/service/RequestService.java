@@ -70,7 +70,7 @@ public class RequestService {
     public void getTimeLapsRequests(String symbol) throws IOException, InterruptedException {
         String result;
         while (true) {
-            result = getAvrCourse(symbol);
+            result = getBestPrisesNow();
             System.out.println(result);
             Thread.sleep(1_800_000);
         }
