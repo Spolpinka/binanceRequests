@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
@@ -19,6 +20,14 @@ import java.util.TreeMap;
 public class RequestService {
     private static final String BASE_URL = "https://api.binance.com";
     private final CostsDao costsDao;
+
+    String strRequestBuyRub = "https://p2p.binance.com/en/trade/TinkoffNew/USDT?fiat=RUB";
+
+    String strRequestSellRub = "https://p2p.binance.com/en/trade/sell/USDT?fiat=RUB&payment=TinkoffNew";
+
+    String strRequestBuyPhp = "https://p2p.binance.com/en/trade/all-payments/USDT?fiat=PHP";
+
+    String strRequestSellPhp = "https://p2p.binance.com/en/trade/sell/USDT?fiat=PHP&payment=ALL";
 
     OkHttpClient client = new OkHttpClient();
 
@@ -104,8 +113,8 @@ public class RequestService {
     }
 
     //получаем Мапу для графика
-    public TreeMap<LocalDateTime, Double> getMapForChart() {
-        return costsDao.getMapForChart();
+    public TreeMap<LocalDateTime, Double> getDataForGraph() {
+        return costsDao.getDataForGraph();
     }
 
     public String getMonthCourses(int month){
@@ -113,17 +122,12 @@ public class RequestService {
         return costsDao.getMonthCourses(month);
     }
 
+    //надо доработать
     public String getBestPrisesNow() {
         StringBuilder result = new StringBuilder();
         HttpClient httpClient = HttpClient.newHttpClient();
-        String strRequestBuyRub = "https://p2p.binance.com/en/trade/TinkoffNew/USDT?fiat=RUB";
 
-        String strRequestSellRub = "https://p2p.binance.com/en/trade/sell/USDT?fiat=RUB&payment=TinkoffNew";
-
-        String strRequestBuyPhp = "https://p2p.binance.com/en/trade/all-payments/USDT?fiat=PHP";
-
-        String strRequestSellPhp = "https://p2p.binance.com/en/trade/sell/USDT?fiat=PHP&payment=ALL";
-
+        //мапа для соответствия символа валюты и ссылки на запрос
         Map<String, String> requests = new TreeMap<>();
 
         String symbolRub = "₽";
@@ -198,7 +202,7 @@ public class RequestService {
         return result.toString();
     }
 
-    public boolean transferToSql(){
+    /*public boolean transferToSql(){
         return costsDao.transferToSql();
-    }
+    }*/
 }

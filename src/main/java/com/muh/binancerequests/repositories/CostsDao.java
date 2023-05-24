@@ -32,15 +32,15 @@ public class CostsDao {
     private static int lastId = 0;
     private final FileService fileService;
 
-    private Map<Integer, TimeCost> timeCosts = new TreeMap<>();
+    //private Map<Integer, TimeCost> timeCosts = new TreeMap<>();
 
     public CostsDao(FileService fileService) {
         this.fileService = fileService;
     }
 
-    public Map<Integer, TimeCost> getTimeCosts() {
+    /*public Map<Integer, TimeCost> getTimeCosts() {
         return timeCosts;
-    }
+    }*/
 
 
     public void add(Double cost, String symbol) {
@@ -66,15 +66,15 @@ public class CostsDao {
 
     //для автоматической загрузки из файла
     //@PostConstruct
-    void init() {
+    /*void init() {
         try {
             readFromFile();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    private void saveToFile() {
+    /*private void saveToFile() {
         try {
             DataFile dataFile = new DataFile(lastId, timeCosts);
             ObjectMapper objectMapper = new ObjectMapper();
@@ -84,9 +84,9 @@ public class CostsDao {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    private void readFromFile() {
+    /*private void readFromFile() {
         try {
             String json = fileService.readFromFile();
             ObjectMapper objectMapper = new ObjectMapper();
@@ -102,16 +102,31 @@ public class CostsDao {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public TreeMap<LocalDateTime, Double> getMapForChart() {
-        Collection <TimeCost> list = timeCosts.values();
+
+    public TreeMap<LocalDateTime, Double> getDataForGraph() {
+        //Collection <TimeCost> list = timeCosts.values();
         TreeMap<LocalDateTime, Double> result = new TreeMap<>();
 
-        for (TimeCost bean :
-                list) {
-            result.put(bean.getTime(), bean.getCost());
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("" +
+                     "SELECT * FROM binance_courses " +
+                     //"WHERE EXTRACT (MONTH FROM datetime) = (?) " +
+                     "ORDER BY datetime")
+        ) {
+            //statement.setInt();
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                System.out.println(resultSet.getTimestamp(1).toLocalDateTime() + " " + resultSet.getDouble(3));
+                result.put(resultSet.getTimestamp(1).toLocalDateTime(), resultSet.getDouble(3));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+
 
         return result;
     }
@@ -158,7 +173,7 @@ public class CostsDao {
     }
 
     //переводи всю базу в SQL
-    public boolean transferToSql(){
+    /*public boolean transferToSql(){
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO binance_courses (datetime, symbol, cost) " +
@@ -177,7 +192,7 @@ public class CostsDao {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     @Data
     @NoArgsConstructor

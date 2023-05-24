@@ -2,12 +2,16 @@ package com.muh.binancerequests.controller;
 
 import com.muh.binancerequests.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.TreeMap;
 
 @RestController
 public class RequestController {
@@ -121,6 +125,11 @@ public class RequestController {
     @GetMapping("/getBestPricesNow")
     public ResponseEntity<String> getBestPrisesNow(){
         return ResponseEntity.ok(requestService.getBestPrisesNow());
+    }
+
+    @GetMapping(value = "/getDataForGraph", produces = MediaType.APPLICATION_JSON_VALUE)
+    public TreeMap<LocalDateTime, Double> getDataForGraph(){
+        return requestService.getDataForGraph();
     }
 
 }
