@@ -11,9 +11,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 @Service
@@ -46,18 +46,14 @@ public class RequestService {
 
         Response response = client.newCall(request).execute();
 
+        assert response.body() != null;
         return response.body().string();
     }
 
     public String getAvrCourse(String symbol) throws IOException {
         String endpoint = "/api/v3/avgPrice";
         String url = BASE_URL + endpoint + "?symbol=";
-        if (symbol != null){
-            url += symbol;
-        }
-        else {
-            url += "USDTRUB";
-        }
+        url += Objects.requireNonNullElse(symbol, "USDTRUB");
 
         Request request = new Request.Builder()
                 .url(url)
