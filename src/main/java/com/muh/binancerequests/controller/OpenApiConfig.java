@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.info.Info;
                 description = "API серверной части программы по запросу и получению сведений от API Binance",
                 version = "1.1.0.",
                 contact = @Contact(
-                        name = "Сироткина Яна Евгеньевна",
+                        name = "Мухортов Алексей Юрьевич",
                         email = "a421243266@gmail.com",
                         url = "https://github.com/Spolpinka/binanceRequests"
                 )
