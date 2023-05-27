@@ -125,10 +125,8 @@ public class CostsDao {
     }
 
     public String getMonthCourses(int month) {
-        //Collection <TimeCost> list = timeCosts.values();
         StringBuilder result = new StringBuilder();
 
-        List<TimeCost> list = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password);
         PreparedStatement statement = connection.prepareStatement("" +
                 "SELECT * FROM binance_courses " +
@@ -152,16 +150,6 @@ public class CostsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
-//        for (TimeCost bean :
-//                list) {
-//            if (bean.getTime().getMonthValue() == month) {
-//                result.append("-> " + bean);
-//            }
-//        }
-
         return result.toString();
     }
 
