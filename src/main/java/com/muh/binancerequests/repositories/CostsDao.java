@@ -1,12 +1,7 @@
 package com.muh.binancerequests.repositories;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.muh.binancerequests.model.TimeCost;
 import com.muh.binancerequests.service.FileService;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -60,8 +55,6 @@ public class CostsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //lastId++;
-        //saveToFile();
     }
 
     //для автоматической загрузки из файла
