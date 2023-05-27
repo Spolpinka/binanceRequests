@@ -153,7 +153,7 @@ public class CostsDao {
         return result.toString();
     }
 
-    //переводи всю базу в SQL
+    //переводим всю базу в SQL
     /*public boolean transferToSql(){
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement(
