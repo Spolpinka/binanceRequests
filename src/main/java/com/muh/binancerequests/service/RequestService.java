@@ -140,17 +140,8 @@ public class RequestService {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(entry.getKey()))
                     .build();
-            String symbolSQL = "";
-            if (entry.getKey().equals(strRequestBuyRub)){
-                symbolSQL = "USDTRUBBUY";
-            }
-            else if (entry.getKey().equals(strRequestSellRub)){
-                symbolSQL = "USDTRUBSELL";
-            } else if (entry.getKey().equals(strRequestBuyPhp)){
-                symbolSQL = "USDTPHPBUY";
-            } else if (entry.getKey().equals(strRequestSellPhp)){
-                symbolSQL = "USDTPHPSELL";
-            }
+            String symbolSQL = getSymbolSQL(entry.getKey());
+
             try {
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
                 responseBody = response.body();
@@ -196,6 +187,21 @@ public class RequestService {
         }
 
         return result.toString();
+    }
+
+    private String getSymbolSQL (String request){
+        String result = "";
+        if (request.equals(strRequestBuyRub)){
+            result = "USDTRUBBUY";
+        }
+        else if (request.equals(strRequestSellRub)){
+            result = "USDTRUBSELL";
+        } else if (request.equals(strRequestBuyPhp)){
+            result = "USDTPHPBUY";
+        } else if (request.equals(strRequestSellPhp)){
+            result = "USDTPHPSELL";
+        }
+        return result;
     }
 
     /*public boolean transferToSql(){
