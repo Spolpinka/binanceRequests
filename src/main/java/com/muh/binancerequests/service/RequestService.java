@@ -105,6 +105,7 @@ public class RequestService {
 
         Response response = client.newCall(request).execute();
 
+        assert response.body() != null;
         return response.body().string();
     }
 
