@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.ArrayList;
 
 @Repository
 public class CostsDao {
