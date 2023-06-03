@@ -117,11 +117,6 @@ public class RequestController {
         }
     }
 
-    /*@GetMapping("/transferToSql")
-    public ResponseEntity<Boolean> transferToSql(){
-        return ResponseEntity.ok(requestService.transferToSql());
-    }
-*/
     @GetMapping("/getBestPricesNow")
     public ResponseEntity<String> getBestPrisesNow(){
         return ResponseEntity.ok(requestService.getBestPrisesNow());
