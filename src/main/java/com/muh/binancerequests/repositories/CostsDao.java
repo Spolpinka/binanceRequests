@@ -33,9 +33,6 @@ public class CostsDao {
 
 
     public void add(Double cost, String symbol) {
-        //тут просто добавляем в мапу
-        //timeCosts.put(lastId, new TimeCost(cost, symbol));
-
         //здесь кидаем в базу SQL
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement(
