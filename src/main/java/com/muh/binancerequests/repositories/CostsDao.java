@@ -26,15 +26,10 @@ public class CostsDao {
     private static int lastId = 0;
     private final FileService fileService;
 
-    //private Map<Integer, TimeCost> timeCosts = new TreeMap<>();
 
     public CostsDao(FileService fileService) {
         this.fileService = fileService;
     }
-
-    /*public Map<Integer, TimeCost> getTimeCosts() {
-        return timeCosts;
-    }*/
 
 
     public void add(Double cost, String symbol) {
@@ -98,7 +93,6 @@ public class CostsDao {
 
 
     public TreeMap<LocalDateTime, Double> getDataForGraph() {
-        //Collection <TimeCost> list = timeCosts.values();
         TreeMap<LocalDateTime, Double> result = new TreeMap<>();
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
