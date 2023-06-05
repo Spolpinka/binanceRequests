@@ -16,16 +16,16 @@ public class FileService {
     private String dataFileName;
 
 
-    public String readFromFile() {
+    /*public String readFromFile() {
         try {
             return Files.readString(Path.of(dataFilePath, dataFileName));
         } catch (IOException e) {
             e.printStackTrace();
             return e.toString();
         }
-    }
+    }*/
 
-    public boolean saveToFile(String json) {
+    /*public boolean saveToFile(String json) {
         try {
             if (cleanDataFile()) {
                 Files.writeString(Path.of(dataFilePath, dataFileName), json);
@@ -38,7 +38,7 @@ public class FileService {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     public boolean cleanDataFile() {
         try {
