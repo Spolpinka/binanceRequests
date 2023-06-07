@@ -1,7 +1,6 @@
 package com.muh.binancerequests.repositories;
 
 import com.muh.binancerequests.model.TimeCost;
-import com.muh.binancerequests.service.FileService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,13 +23,6 @@ public class CostsDao {
     private String url;
 
     private static int lastId = 0;
-    private final FileService fileService;
-
-
-    public CostsDao(FileService fileService) {
-        this.fileService = fileService;
-    }
-
 
     public void add(Double cost, String symbol) {
         //здесь кидаем в базу SQL
