@@ -1,7 +1,10 @@
 package com.muh.binancerequests.controller;
 
 import com.muh.binancerequests.service.RequestService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,18 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.TreeMap;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Программа для взаимодействия с Binance",
+                description = "API серверной части программы по запросу и получению сведений от API Binance",
+                version = "1.1.0.",
+                contact = @Contact(
+                        name = "Мухортов Алексей Юрьевич",
+                        email = "a421243266@gmail.com",
+                        url = "https://github.com/Spolpinka/binanceRequests"
+                )
+        )
+)
 @RestController
 //@RequestMapping("/api")
 public class RequestController {
