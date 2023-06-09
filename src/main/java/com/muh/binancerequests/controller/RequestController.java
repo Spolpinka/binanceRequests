@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.TreeMap;
 
+//надо бы сделать эндпойнт для других бирж
 @OpenAPIDefinition(
         info = @Info(
                 title = "Программа для взаимодействия с Binance",
