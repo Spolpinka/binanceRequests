@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.TreeMap;
 
-//надо бы сделать эндпойнт для других бирж
+//надо бы сделать эндпойнт для других бирж: ByBit BitGet
 @OpenAPIDefinition(
         info = @Info(
                 title = "Программа для взаимодействия с Binance",
