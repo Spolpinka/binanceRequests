@@ -114,7 +114,7 @@ public class RequestService {
         return costsDao.getDataForGraph();
     }
 
-    public String getMonthCourses(int month){
+    public String getMonthCourses(int month) {
 
         return costsDao.getMonthCourses(month);
     }
@@ -146,7 +146,7 @@ public class RequestService {
             try {
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
                 responseBody = response.body();
-                //System.out.println(responseBody);
+                System.out.println(responseBody);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -160,29 +160,43 @@ public class RequestService {
             Double maxSell = 0.0;
             //перебор всех символов и определение макимальной продажи и минимальной попупки
             //while (responseBody.contains(startCourse)) {
-                String tempCourse = responseBody.substring(responseBody.indexOf(startCourse) +
-                        startCourse.length(), responseBody.indexOf(startCourse) + startCourse.length() + 5);
-                if (symbolSQL.contains("BUY")){
-                    if (Double.parseDouble(tempCourse) < minBuy){
-                        minBuy = Double.parseDouble(tempCourse);
-                        //добавляем значение в базу
-                        costsDao.add(minBuy, symbolSQL);
-                        result.append(symbolSQL).append(" - ").append(minBuy).append("\n");
-                    }
-                } else {
-                    if (Double.parseDouble(tempCourse) > maxSell){
-                        maxSell = Double.parseDouble(tempCourse);
-                        //добавляем значение в базу
-                        costsDao.add(maxSell, symbolSQL);
-                        result.append(symbolSQL).append(" - ").append(maxSell).append("\n");
-                    }
+            int indexStart = responseBody.indexOf(startCourse) + startCourse.length();
+            String tempCourse = responseBody.substring(indexStart, indexStart + 5);
+            System.out.println(tempCourse);
+            double course = 0;
+            System.out.println("responseBody содержит начальную строку = " + responseBody.contains(startCourse));
+            while (responseBody.contains(startCourse)) {
+                System.out.println("зашел в цикл");
+                try {
+                    course = Double.parseDouble(tempCourse);
+                    break;
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    responseBody = responseBody.substring(indexStart);
+                    return "Что-то пошла не так, вырезана строка " + tempCourse;
                 }
-                responseBody = responseBody.substring(responseBody.indexOf(startVolume) + startVolume.length());
-                String tempVolume1 = responseBody.substring(0, responseBody.indexOf(endVolume));
-                System.out.println(tempVolume1);
-                responseBody = responseBody.substring(responseBody.indexOf(startVolume) + startVolume.length());
-                String tempVolume2 = responseBody.substring(0, responseBody.indexOf(endVolume));
-                System.out.println(tempVolume2);
+            }
+            if (symbolSQL.contains("BUY")) {
+                if (course < minBuy) {
+                    minBuy = Double.parseDouble(tempCourse);
+                    //добавляем значение в базу
+                    costsDao.add(minBuy, symbolSQL);
+                    result.append(symbolSQL).append(" - ").append(minBuy).append("\n");
+                }
+            } else {
+                if (Double.parseDouble(tempCourse) > maxSell) {
+                    maxSell = Double.parseDouble(tempCourse);
+                    //добавляем значение в базу
+                    costsDao.add(maxSell, symbolSQL);
+                    result.append(symbolSQL).append(" - ").append(maxSell).append("\n");
+                }
+            }
+            responseBody = responseBody.substring(indexStart);
+            String tempVolume1 = responseBody.substring(0, responseBody.indexOf(endVolume));
+            System.out.println(tempVolume1);
+            responseBody = responseBody.substring(responseBody.indexOf(startVolume) + startVolume.length());
+            String tempVolume2 = responseBody.substring(0, responseBody.indexOf(endVolume));
+            System.out.println(tempVolume2);
 
             //}
         }
@@ -190,16 +204,15 @@ public class RequestService {
         return result.toString();
     }
 
-    private String getSymbolSQL (String request){
+    private String getSymbolSQL(String request) {
         String result = "";
-        if (request.equals(strRequestBuyRub)){
+        if (request.equals(strRequestBuyRub)) {
             result = "USDTRUBBUY";
-        }
-        else if (request.equals(strRequestSellRub)){
+        } else if (request.equals(strRequestSellRub)) {
             result = "USDTRUBSELL";
-        } else if (request.equals(strRequestBuyPhp)){
+        } else if (request.equals(strRequestBuyPhp)) {
             result = "USDTPHPBUY";
-        } else if (request.equals(strRequestSellPhp)){
+        } else if (request.equals(strRequestSellPhp)) {
             result = "USDTPHPSELL";
         }
         return result;
