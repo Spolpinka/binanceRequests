@@ -24,6 +24,7 @@ public class CostsDao {
 
     private static int lastId = 0;
 
+    //добавить методы JPA для работы с БД
     public void add(Double cost, String symbol) {
         //здесь кидаем в базу SQL
         try (final Connection connection = DriverManager.getConnection(url, user, password);
